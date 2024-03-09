@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:background="#1E66D6"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <ListView
+        android:layout_width="@dimen/_340sdp"
+        android:layout_height="@dimen/_570sdp"
+        android:divider="@android:color/transparent"
+        android:padding="@dimen/_7sdp"
+        android:id="@+id/listview"
+        android:dividerHeight="@dimen/_9sdp"/>
+
+
+</RelativeLayout>
