@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.view.View;
@@ -12,7 +13,7 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toolbar;
+
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
@@ -30,16 +31,30 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity {
     ListView listView;
     String[] items;
+
+    public class FindSongsTask extends AsyncTask<Void, Void, ArrayList<File>> {
+        @Override
+        protected ArrayList<File> doInBackground(Void... voids) {
+            return findSong(Environment.getExternalStorageDirectory());
+        }
+
+        @Override
+        protected void onPostExecute(ArrayList<File> result) {
+            // Update UI with the result
+            handleSongs(result);
+        }
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         ActionBar actionBar;
         actionBar = getSupportActionBar();
         ColorDrawable colorDrawable = new ColorDrawable(Color.parseColor("#1E6CD6"));
         actionBar.setBackgroundDrawable(colorDrawable);
-        actionBar.setTitle("Music Player");
+        actionBar.setTitle(R.string.app_name);
+        int titleColor = getResources().getColor(R.color.white);
+
 
         listView = findViewById(R.id.listview);
 
@@ -49,7 +64,8 @@ public class MainActivity extends AppCompatActivity {
         Dexter.withContext(this).withPermission(Manifest.permission.READ_EXTERNAL_STORAGE).withListener(new PermissionListener() {
             @Override
             public void onPermissionGranted(PermissionGrantedResponse permissionGrantedResponse) {
-                displaySong();
+//                displaySong();
+                new FindSongsTask().execute();
             }
 
             @Override
@@ -80,6 +96,26 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         return arrayList;
+    }
+
+    private void handleSongs(ArrayList<File> mySongs) {
+        items = new String[mySongs.size()];
+        for (int k = 0; k < mySongs.size(); k++) {
+            items[k] = mySongs.get(k).getName().replace(".mp3", "").replace(".wav", "");
+        }
+        customAdapter customAdapter = new customAdapter();
+        listView.setAdapter(customAdapter);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                String songName = (String) listView.getItemAtPosition(i);
+                startActivity(new Intent(getApplicationContext(), PlayerActivity.class)
+                        .putExtra("songs", mySongs)
+                        .putExtra("songname", songName)
+                        .putExtra("pos", i));
+            }
+        });
     }
 
     public  void displaySong(){
