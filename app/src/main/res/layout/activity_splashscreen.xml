@@ -24,7 +24,7 @@
         android:layout_width="@dimen/_300sdp"
         android:layout_height="@dimen/_60sdp"
         android:gravity="center"
-
+        android:textColor="#959694"
         android:text="MUSIC PLAYER"
         android:textAlignment="center"
         android:textSize="@dimen/_35sdp"
@@ -40,6 +40,8 @@
         android:id="@+id/textView2"
         android:layout_width="@dimen/_50sdp"
         android:layout_height="@dimen/_30sdp"
+        android:textColor="#959694"
+
         android:gravity="center"
         android:text="BY"
         android:textAlignment="center"
@@ -56,6 +58,8 @@
         android:layout_height="@dimen/_30sdp"
         android:gravity="center"
         android:text="PARAS KAMBOJ"
+        android:textColor="#959694"
+
         android:textAlignment="center"
         android:textSize="@dimen/_16sdp"
         app:layout_constraintBottom_toBottomOf="parent"
